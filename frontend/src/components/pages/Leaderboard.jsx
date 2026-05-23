@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { getLeaderboard } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
+
 
 const SORTS = [
   { key: 'totalXpEarned', label: 'TOP XP' },
@@ -20,21 +21,23 @@ export default function Leaderboard() {
   const [sort, setSort] = useState('totalXpEarned');
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchLB();
-  }, [sort]);
+  const fetchLB = useCallback(async () => {
+  setLoading(true);
+  try {
+    const { data: res } = await getLeaderboard(sort);
+    setData(res.leaderboard);
+  } catch {
+    toast.error('Failed to load leaderboard');
+  } finally {
+    setLoading(false);
+  }
+}, [sort]);
 
-  const fetchLB = async () => {
-    setLoading(true);
-    try {
-      const { data: res } = await getLeaderboard(sort);
-      setData(res.leaderboard);
-    } catch {
-      toast.error('Failed to load leaderboard');
-    } finally {
-      setLoading(false);
-    }
-  };
+useEffect(() => {
+  fetchLB();
+}, [fetchLB]);
+
+
 
   return (
     <div style={{ padding: '2rem' }}>

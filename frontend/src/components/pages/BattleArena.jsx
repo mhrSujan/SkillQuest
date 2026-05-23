@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { getBosses, saveBattleResult } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
@@ -12,7 +12,6 @@ export default function BattleArena() {
   const [bossHP, setBossHP] = useState(0);
   const [log, setLog] = useState([]);
   const [phase, setPhase] = useState('select'); // select | fight | victory | defeat
-  const [defending, setDefending] = useState(false);
   const [btnsDisabled, setBtnsDisabled] = useState(false);
   const [turns, setTurns] = useState(0);
   const logRef = useRef(null);
@@ -124,7 +123,7 @@ export default function BattleArena() {
       {phase === 'select' && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
           {bosses.map((boss) => {
-            const hpPct = Math.round((boss.maxHp / boss.maxHp) * 100);
+            
             return (
               <motion.div key={boss._id} whileHover={{ y: -4 }} onClick={() => startBattle(boss)}
                 style={{ background: 'var(--surface)', border: '1px solid var(--border2)', borderRadius: 16, padding: '1.5rem', cursor: 'pointer', textAlign: 'center', transition: 'border-color 0.2s' }}

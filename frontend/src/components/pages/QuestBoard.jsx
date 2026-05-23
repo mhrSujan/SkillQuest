@@ -1,36 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { getQuests, completeQuest } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
+
 
 const CATEGORIES = ['all', 'coding', 'logic', 'career', 'data', 'project'];
 const DIFF_COLORS = { easy: 'var(--green)', medium: 'var(--gold)', hard: 'var(--red)', legendary: 'var(--purple)' };
 const TAG_COLORS = { coding: 'badge-blue', logic: 'badge-purple', career: 'badge-gold', data: 'badge-green', project: 'badge-blue', backend: 'badge-purple', react: 'badge-blue', sql: 'badge-green', ml: 'badge-purple', interview: 'badge-gold', algorithms: 'badge-blue' };
 
 export default function QuestBoard() {
-  const { user, updateUser } = useAuth();
+  const { updateUser } = useAuth();
   const [quests, setQuests] = useState([]);
   const [filter, setFilter] = useState('all');
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(true);
   const [completing, setCompleting] = useState(false);
 
-  useEffect(() => {
-    fetchQuests();
-  }, [filter]);
+  const fetchQuests = useCallback(async () => {
+  setLoading(true);
+  try {
+    const { data } = await getQuests(filter);
+    setQuests(data.quests);
+  } catch {
+    toast.error('Failed to load quests');
+  } finally {
+    setLoading(false);
+  }
+}, [filter]);
 
-  const fetchQuests = async () => {
-    setLoading(true);
-    try {
-      const { data } = await getQuests(filter);
-      setQuests(data.quests);
-    } catch {
-      toast.error('Failed to load quests');
-    } finally {
-      setLoading(false);
-    }
-  };
+useEffect(() => {
+  fetchQuests();
+}, [fetchQuests]);
+
 
   const handleComplete = async () => {
     if (!selected) return;
