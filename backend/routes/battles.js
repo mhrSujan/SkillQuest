@@ -85,6 +85,9 @@ router.post('/result', protect, async (req, res) => {
 
 // ── POST /api/battles/seed ── Seed bosses
 router.post('/seed', async (req, res) => {
+  if (req.headers['x-seed-secret'] !== process.env.SEED_SECRET) {
+    return res.status(403).json({ success: false, message: 'Forbidden' });
+  }
   try {
     await Boss.deleteMany({});
     const bosses = [

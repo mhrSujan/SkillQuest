@@ -27,7 +27,10 @@ router.get('/', protect, async (req, res) => {
 });
 
 // ── POST /api/quests/:id/complete ── Complete a quest
-router.post('/:id/complete', protect, async (req, res) => {
+router.post('/seed', async (req, res) => {
+  if (req.headers['x-seed-secret'] !== process.env.SEED_SECRET) {
+    return res.status(403).json({ success: false, message: 'Forbidden' });
+  }
   try {
     const quest = await Quest.findById(req.params.id);
     if (!quest) return res.status(404).json({ success: false, message: 'Quest not found' });
