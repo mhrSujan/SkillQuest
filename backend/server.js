@@ -11,6 +11,17 @@ dotenv.config();
 // Connect to MongoDB
 connectDB();
 
+//limiter
+const rateLimit = require('express-rate-limit');
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10, // only 10 attempts per 15 mins
+  message: { success: false, message: 'Too many attempts, slow down!' }
+});
+
+app.use('/api/auth', authLimiter);
+
 const app = express();
 
 // ── Middleware ──
