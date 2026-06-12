@@ -13,11 +13,20 @@ const app = express(); // ← app must be defined FIRST
 
 // ── Middleware ──
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production'
-    ? process.env.CLIENT_URL
-    : 'http://localhost:3000',
+  origin: function(origin, callback) {
+    const allowed = [
+      'http://localhost:3000',
+      'https://skill-quest-j49c.vercel.app'
+    ];
+    if (!origin || allowed.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
