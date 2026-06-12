@@ -42,4 +42,8 @@ export const getLeaderboard = (sort) => api.get('/users/leaderboard', { params: 
 export const unlockSkill = (skillId, cost) => api.post('/users/unlock-skill', { skillId, cost });
 export const updateProfile = (data) => api.put('/users/profile', data);
 
+// Render sleep Fix
+export const wakeBackend = () => 
+  fetch(`${process.env.REACT_APP_API_URL}/health`).catch(() => {});
+
 export default api;

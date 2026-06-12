@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { wakeBackend } from './utils/api';
 import Landing from './components/pages/Landing';
 import Login from './components/pages/Login';
 import Register from './components/pages/Register';
@@ -12,6 +13,8 @@ import BattleArena from './components/pages/BattleArena';
 import SkillTree from './components/pages/SkillTree';
 import Leaderboard from './components/pages/Leaderboard';
 import './index.css';
+
+useEffect(() => { wakeBackend(); }, []);
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
