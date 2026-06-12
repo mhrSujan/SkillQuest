@@ -16,6 +16,14 @@ router.get('/bosses', protect, async (req, res) => {
 
 // ── POST /api/battles/result ── Save battle result
 router.post('/result', protect, async (req, res) => {
+  //sanity check
+  const { bossId, result, turnsPlayed } = req.body;
+  if (result === 'victory' && (!turnsPlayed || turnsPlayed < 3)) {
+    return res.status(400).json({ 
+      success: false, 
+      message: 'Invalid battle result' 
+    });
+  }
   try {
     const { bossId, result, turnsPlayed, playerHpRemaining } = req.body;
 

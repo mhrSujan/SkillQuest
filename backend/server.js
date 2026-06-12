@@ -11,6 +11,23 @@ dotenv.config();
 // Connect to MongoDB
 connectDB();
 
+
+// GET /api/admin/stats - check db usage
+app.get('/api/admin/stats', async (req, res) => {
+  if (req.headers['x-admin-key'] !== process.env.SEED_SECRET) {
+    return res.status(403).json({ message: 'Forbidden' });
+  }
+  const mongoose = require('mongoose');
+  const stats = await mongoose.connection.db.stats();
+  res.json({
+    dataSize: `${(stats.dataSize / 1024 / 1024).toFixed(2)} MB`,
+    storageSize: `${(stats.storageSize / 1024 / 1024).toFixed(2)} MB`,
+    collections: stats.collections,
+    objects: stats.objects,
+    limit: '512 MB (free tier)'
+  });
+});
+
 //limiter
 const rateLimit = require('express-rate-limit');
 
