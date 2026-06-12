@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -32,6 +32,8 @@ const PublicRoute = ({ children }) => {
 };
 
 function AppRoutes() {
+  export default function App() {
+  useEffect(() => { wakeBackend(); }, []);
   return (
     <Routes>
       <Route path="/" element={<PublicRoute><Landing /></PublicRoute>} />
@@ -47,6 +49,7 @@ function AppRoutes() {
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
+}
 }
 
 export default function App() {
