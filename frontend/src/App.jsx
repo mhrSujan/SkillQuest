@@ -14,7 +14,7 @@ import SkillTree from './components/pages/SkillTree';
 import Leaderboard from './components/pages/Leaderboard';
 import './index.css';
 
-useEffect(() => { wakeBackend(); }, []);
+
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -32,8 +32,6 @@ const PublicRoute = ({ children }) => {
 };
 
 function AppRoutes() {
-  export default function App() {
-  useEffect(() => { wakeBackend(); }, []);
   return (
     <Routes>
       <Route path="/" element={<PublicRoute><Landing /></PublicRoute>} />
@@ -50,9 +48,9 @@ function AppRoutes() {
     </Routes>
   );
 }
-}
 
 export default function App() {
+  useEffect(() => { wakeBackend(); }, []);
   return (
     <AuthProvider>
       <BrowserRouter>
