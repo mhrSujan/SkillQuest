@@ -171,3 +171,246 @@ body {
   margin-bottom: 4px;
 }
 .page-sub { font-size: 0.95rem; color: var(--text3); }
+
+
+/* ── Sidebar visibility control ── */
+.sidebar-desktop {
+  width: 220px;
+  min-height: 100vh;
+  background: var(--bg2);
+  border-right: 1px solid var(--border2);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  flex-shrink: 0;
+}
+
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.mobile-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--border2);
+}
+
+.mobile-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.mobile-nav-links::-webkit-scrollbar { display: none; }
+
+.mobile-dropdown {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border2);
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Global ── */
+* { box-sizing: border-box; }
+body { overflow-x: hidden; }
+
+/* ══════════════════════════════
+   MOBILE  (≤768px)
+══════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* Show mobile nav, hide desktop sidebar */
+  .sidebar-desktop { display: none !important; }
+  .mobile-nav      { display: flex !important; }
+
+  /* Layout: column */
+  div[style*="display: flex"][style*="min-height: 100vh"] {
+    flex-direction: column !important;
+  }
+
+  /* Page padding */
+  div[style*="padding: 2rem"] {
+    padding: 1rem !important;
+  }
+
+  .page-title { font-size: 1.1rem !important; }
+  .card       { padding: 1rem !important; }
+
+  /* ── Dashboard ── */
+
+  /* 4-col stats → 2-col */
+  div[style*="grid-template-columns: repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* 2fr 1fr → stack */
+  div[style*="grid-template-columns: 2fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Active quests 3-col → 1-col */
+  div[style*="grid-template-columns: repeat(3, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Level bar card → stack */
+  .card[style*="align-items: center"][style*="gap: 1.5rem"] {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 0.75rem !important;
+  }
+
+  /* ── Battle Arena ── */
+
+  /* Boss grid 2-col → 1-col */
+  div[style*="grid-template-columns: repeat(2, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Battle actions 4-col → 2x2 */
+  div[style*="grid-template-columns: repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* VS section shrink */
+  div[style*="padding: '0 1.5rem'"] {
+    padding: 0 0.5rem !important;
+  }
+
+  /* Victory/defeat screen */
+  div[style*="max-width: 480"][style*="margin: 0 auto"] {
+    padding: 1.5rem !important;
+    margin: 0 !important;
+  }
+
+  /* ── Skill Tree ── */
+  div[style*="grid-template-columns: repeat(2, 1fr)"][style*="gap: 1.5rem"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Leaderboard ── */
+  /* Collapse to 4 cols, hide quests + bosses */
+  div[style*="grid-template-columns: 60px 1fr 100px 100px 100px 100px"] {
+    grid-template-columns: 44px 1fr 80px 70px !important;
+  }
+
+  /* Hide 4th and 6th children (QUESTS, BOSSES) */
+  div[style*="grid-template-columns: 60px 1fr 100px 100px 100px 100px"] > *:nth-child(4),
+  div[style*="grid-template-columns: 60px 1fr 100px 100px 100px 100px"] > *:nth-child(6) {
+    display: none !important;
+  }
+
+  /* Sort tabs scrollable */
+  div[style*="gap: 8px"][style*="margin-bottom: 1.5rem"][style*="flex-wrap: wrap"] {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    padding-bottom: 6px !important;
+    scrollbar-width: none !important;
+  }
+
+  /* ── Quest Board ── */
+
+  /* Quest row wrap */
+  div[style*="border-left: 3px solid"] > div[style*="display: flex"][style*="align-items: center"] {
+    flex-wrap: wrap !important;
+  }
+
+  /* Quest rewards: full width on wrap */
+  div[style*="text-align: right"][style*="flex-shrink: 0"] {
+    flex-shrink: unset !important;
+    text-align: left !important;
+    display: flex !important;
+    gap: 6px !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+  }
+
+  /* Quest modal */
+  div[style*="position: fixed"][style*="inset: 0"] > div[style*="scale(0.9)"],
+  div[style*="position: fixed"][style*="inset: 0"] > div > div {
+    max-height: 90vh !important;
+    padding: 1.2rem !important;
+    margin: 0.5rem !important;
+  }
+
+  /* ── Auth pages ── */
+  div[style*="max-width: 420px"],
+  div[style*="maxWidth: 420"],
+  div[style*="max-width: 460px"],
+  div[style*="maxWidth: 460"] {
+    padding: 1.2rem !important;
+    margin: 0.5rem !important;
+  }
+
+  /* Class grid: 3-col → 2-col */
+  div[style*="grid-template-columns: repeat(3, 1fr)"][style*="gap: 8px"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* ── Landing ── */
+  div[style*="gap: 1rem"][style*="justify-content: center"][style*="flex-wrap: wrap"] {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 0 1rem !important;
+  }
+
+  .btn-primary, .btn-secondary {
+    width: 100% !important;
+    text-align: center !important;
+  }
+
+  /* Landing stats row */
+  div[style*="gap: 2.5rem"][style*="justify-content: center"] {
+    gap: 1rem !important;
+    flex-wrap: wrap !important;
+  }
+
+  /* Badges smaller */
+  .badge {
+    font-size: 10px !important;
+    padding: 2px 7px !important;
+  }
+
+  /* Better touch targets */
+  button, a { min-height: 36px; }
+}
+
+/* ══════════════════════════════
+   TABLET (769px – 1024px)
+══════════════════════════════ */
+@media (min-width: 769px) and (max-width: 1024px) {
+
+  .sidebar-desktop { width: 190px !important; }
+
+  /* 4-col → 2-col */
+  div[style*="grid-template-columns: repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Active quests 3-col → 2-col */
+  div[style*="grid-template-columns: repeat(3, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Skill tree stays 2-col — fine on tablet */
+
+  /* Leaderboard — tighten columns */
+  div[style*="grid-template-columns: 60px 1fr 100px 100px 100px 100px"] {
+    grid-template-columns: 50px 1fr 88px 88px 88px 88px !important;
+  }
+}
